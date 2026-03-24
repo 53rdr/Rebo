@@ -7,29 +7,13 @@ BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 SIGNUP_LINK = "https://rebatrix.club"
 logging.basicConfig(level=logging.INFO)
 
-RATES = {
-    "exness": {"std": 6.00, "raw": 3.00},
-    "icmarkets": {"std": 5.50, "raw": 2.75},
-    "xm": {"std": 8.50, "raw": 4.25},
-}
-BROKERS = [("Exness", "exness"), ("IC Markets", "icmarkets"), ("XM", "xm")]
-BD = {k: n for n, k in BROKERS}
+RATES = {"exness":{"std":6.00,"raw":3.00},"icmarkets":{"std":5.50,"raw":2.75},"xm":{"std":8.50,"raw":4.25}}
+BROKERS = [("Exness","exness"),("IC Markets","icmarkets"),("XM","xm")]
+BD = {k:n for n,k in BROKERS}
 USER = {}
-SIZE_MAP = {
-    "1": "Under $500",
-    "2": "$500 - $2,500",
-    "3": "$2,500 - $10,000",
-    "4": "$10,000 - $50,000",
-    "5": "$50,000 - $1M+",
-}
-EST_MAP = {
-    "1": "$5 - $20",
-    "2": "$30 - $100",
-    "3": "$100 - $400",
-    "4": "$400 - $2,000",
-    "5": "$2,000+",
-}
-
+SIZE_MAP = {"1":"Under $500","2":"$500 - $2,500","3":"$2,500 - $10,000","4":"$10,000 - $50,000","5":"$50,000 - $1M+"}
+EST_MAP  = {"1":"$5 - $20","2":"$30 - $100","3":"$100 - $400","4":"$400 - $2,000","5":"$2,000+"}
+VIDEO_ID = "BAACAgQAAxkBAAEDjPxpwmuDRvuSPFRudatgkQQ7ZqY67AACjx8AAkVKEFJLX9v-2o9ipzoE"
 
 def home_markup():
     return InlineKeyboardMarkup([
@@ -38,16 +22,12 @@ def home_markup():
         [InlineKeyboardButton("🧮 Calculate my rebates", callback_data="calc")],
     ])
 
-
 async def start(update, context):
     USER[update.effective_user.id] = {}
     await update.message.reply_text(
-        "👋 Welcome to Rebatrix!\n\n"
-        "Earn cashback on every forex trade — win or lose.\n\n"
-        "What would you like to do?",
+        "👋 Welcome to Rebatrix!\n\nEarn cashback on every forex trade — win or lose.\n\nWhat would you like to do?",
         reply_markup=home_markup()
     )
-
 
 async def button(update, context):
     q = update.callback_query
@@ -61,26 +41,24 @@ async def button(update, context):
     if data == "home":
         USER[uid] = {}
         await q.edit_message_text(
-            "👋 Welcome to Rebatrix!\n\n"
-            "Earn cashback on every forex trade — win or lose.\n\n"
-            "What would you like to do?",
+            "👋 Welcome to Rebatrix!\n\nEarn cashback on every forex trade — win or lose.\n\nWhat would you like to do?",
             reply_markup=home_markup()
         )
 
-      elif data == "explain":
+    elif data == "explain":
         await q.edit_message_text(
             "📚 What are forex rebates?\n\n"
-            "Every time you open a trade, your broker charge you  a spread or commission.\n\n"
-            "Rebatrix shares a portion (upto 92%)back with you automatically.\n\n"
+            "Every time you open a trade, your broker charges you a spread or commission.\n\n"
+            "Rebatrix shares a portion (upto 92%) back with you automatically.\n\n"
             "✅ You trade as normal\n"
             "✅ Cashback on every trade\n"
             "✅ Works on winning AND losing trades\n\n"
-            "Free to join. No catch. just you leaving your money on the table .\n\n"
-            "Watch the video below to learn/understand deeply 👇"
+            "Free to join. No catch. Just you leaving your money on the table.\n\n"
+            "Watch the video below to learn more 👇"
         )
         await context.bot.send_video(
-            chat_id=q.from_user.id,
-            video="BAACAgQAAxkBAAEDjPxpwmuDRvuSPFRudatgkQQ7ZqY67AACjx8AAkVKEFJLX9v-2o9ipzoE",
+            chat_id=uid,
+            video=VIDEO_ID,
             caption="💰 This is how Rebatrix works — cashback on every trade, free to join!",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("✅ Got it — lets go", callback_data="onboard")],
@@ -146,12 +124,7 @@ async def button(update, context):
             u["waiting"] = "country"
             await q.edit_message_text("✏️ Type your country name below:")
         else:
-            cm = {
-                "or_uae": "🇦🇪 UAE",
-                "or_india": "🇮🇳 India",
-                "or_pak": "🇵🇰 Pakistan",
-                "or_usa": "🇺🇸 USA",
-            }
+            cm = {"or_uae":"🇦🇪 UAE","or_india":"🇮🇳 India","or_pak":"🇵🇰 Pakistan","or_usa":"🇺🇸 USA"}
             u["country"] = cm.get(data, "Other")
             broker = u.get("broker", "exness")
             size = u.get("size", "2")
@@ -186,7 +159,7 @@ async def button(update, context):
         broker = u["cb"]
         await q.edit_message_text(
             "✅ Broker: " + BD.get(broker, broker) + "\n\n"
-            "Step 2 — What type of account do you have?\n\n"
+            "Step 2 — Account type?\n\n"
             "📊 Standard — wider spread, no commission\n"
             "⚡ Raw/ECN — tight spread, commission per trade",
             reply_markup=InlineKeyboardMarkup([
@@ -212,7 +185,6 @@ async def button(update, context):
             "• Active: 7+ lots\n\n"
             "Type your number below:"
         )
-
 
 async def message(update, context):
     uid = update.effective_user.id
@@ -277,7 +249,6 @@ async def message(update, context):
     else:
         await update.message.reply_text("Type /start to begin 👋")
 
-
 def main():
     app = Application.builder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
@@ -285,7 +256,6 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message))
     print("Rebatrix bot running...")
     app.run_polling(drop_pending_updates=True)
-
 
 if __name__ == "__main__":
     main()
