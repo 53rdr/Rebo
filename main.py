@@ -67,15 +67,21 @@ async def button(update, context):
             reply_markup=home_markup()
         )
 
-    elif data == "explain":
+      elif data == "explain":
         await q.edit_message_text(
             "📚 What are forex rebates?\n\n"
-            "Every time you open a trade, your broker earns a spread or commission.\n\n"
-            "Rebatrix shares a portion back with you automatically.\n\n"
+            "Every time you open a trade, your broker charge you  a spread or commission.\n\n"
+            "Rebatrix shares a portion (upto 92%)back with you automatically.\n\n"
             "✅ You trade as normal\n"
             "✅ Cashback on every trade\n"
             "✅ Works on winning AND losing trades\n\n"
-            "Free to join. No catch.",
+            "Free to join. No catch. just you leaving your money on the table .\n\n"
+            "Watch the video below to learn/understand deeply 👇"
+        )
+        await context.bot.send_video(
+            chat_id=q.from_user.id,
+            video="BAACAgQAAxkBAAEDjPxpwmuDRvuSPFRudatgkQQ7ZqY67AACjx8AAkVKEFJLX9v-2o9ipzoE",
+            caption="💰 This is how Rebatrix works — cashback on every trade, free to join!",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("✅ Got it — lets go", callback_data="onboard")],
                 [InlineKeyboardButton("🧮 Calculate my rebates", callback_data="calc")],
