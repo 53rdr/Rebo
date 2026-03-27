@@ -426,7 +426,6 @@ async def button(update, context):
     elif data == "onboard":
         u["flow"] = "onboard"
         kb = [[InlineKeyboardButton(n, callback_data=f"ob_{k}")] for n, k in BROKERS]
-        kb = [kb[i:i+2] for i in range(0, len(kb), 2)]
         kb.append(back_btn(uid))
         await q.edit_message_text(t(uid, "step1"), reply_markup=InlineKeyboardMarkup(kb))
 
@@ -508,7 +507,6 @@ async def button(update, context):
     elif data == "calc":
         u["flow"] = "calc"
         kb = [[InlineKeyboardButton(n, callback_data=f"cb_{k}")] for n, k in BROKERS]
-        kb = [kb[i:i+2] for i in range(0, len(kb), 2)]
         kb.append(back_btn(uid))
         await q.edit_message_text(t(uid, "calc_step1"), reply_markup=InlineKeyboardMarkup(kb))
 
