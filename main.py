@@ -340,7 +340,6 @@ async def start(update, context):
 
 async def set_lang(update, context):
     q = update.callback_query
-    await q.answer()
     uid  = q.from_user.id
     lang = q.data.replace("lang_", "")
     if uid not in USER:
@@ -729,6 +728,7 @@ def main():
     app.add_handler(CommandHandler("reject",  reject))
     app.add_handler(CallbackQueryHandler(button))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message))
+    app.add_error_handler(lambda update, context: logging.exception("Unhandled error: %s", context.error))
     print("Rebatrix multilingual bot running…")
     app.run_polling(drop_pending_updates=True)
 
