@@ -3,99 +3,98 @@ import os
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters
 
-BOT_TOKEN   = os.environ.get(“TELEGRAM_BOT_TOKEN”)
-SIGNUP_LINK = “https://rebatrix.club”
-WHATSAPP    = “https://wa.me/PLACEHOLDER”
-TELEGRAM_GROUP = “https://t.me/PLACEHOLDER”
-TIKTOK      = “https://www.tiktok.com/@PLACEHOLDER”
-INSTAGRAM   = “https://www.instagram.com/PLACEHOLDER”
-YOUTUBE     = “https://www.youtube.com/@PLACEHOLDER”
-VIDEO_URL   = “https://rebatrix.club”
+BOT_TOKEN   = os.environ.get("TELEGRAM_BOT_TOKEN")
+SIGNUP_LINK = "https://rebatrix.club"
+WHATSAPP    = "https://wa.me/PLACEHOLDER"
+TELEGRAM_GROUP = "https://t.me/PLACEHOLDER"
+TIKTOK      = "https://www.tiktok.com/@PLACEHOLDER"
+INSTAGRAM   = "https://www.instagram.com/PLACEHOLDER"
+YOUTUBE     = "https://www.youtube.com/@PLACEHOLDER"
+VIDEO_URL   = "https://rebatrix.club"
 
 logging.basicConfig(level=logging.INFO)
 
 RATES = {
-“exness”:    {“std”: 6.00, “raw”: 3.00},
-“icmarkets”: {“std”: 5.50, “raw”: 2.75},
-“xm”:        {“std”: 8.50, “raw”: 4.25},
+"exness":    {"std": 6.00, "raw": 3.00},
+"icmarkets": {"std": 5.50, "raw": 2.75},
+"xm":        {"std": 8.50, "raw": 4.25},
 }
-BROKERS = [(“Exness”,“exness”),(“IC Markets”,“icmarkets”),(“XM”,“xm”)]
+BROKERS = [("Exness","exness"),("IC Markets","icmarkets"),("XM","xm")]
 BD = {k:n for n,k in BROKERS}
 USER = {}
 
 SIZE_MAP = {
-“en”: {“1”:“Under $500”,“2”:”$500 - $2,500”,“3”:”$2,500 - $10,000”,“4”:”$10,000 - $50,000”,“5”:”$50,000 - $1M+”},
-“ar”: {“1”:“أقل من 500$”,“2”:“500$ - 2,500$”,“3”:“2,500$ - 10,000$”,“4”:“10,000$ - 50,000$”,“5”:“50,000$ - 1M$+”},
-“id”: {“1”:“Dibawah $500”,“2”:”$500 - $2,500”,“3”:”$2,500 - $10,000”,“4”:”$10,000 - $50,000”,“5”:”$50,000 - $1 Juta+”},
-“ur”: {“1”:“500$ سے کم”,“2”:“500$ - 2,500$”,“3”:“2,500$ - 10,000$”,“4”:“10,000$ - 50,000$”,“5”:“50,000$ - 1M$+”},
-“fr”: {“1”:“Moins de 500$”,“2”:“500$ - 2 500$”,“3”:“2 500$ - 10 000$”,“4”:“10 000$ - 50 000$”,“5”:“50 000$ - 1M$+”},
+"en": {"1":"Under $500","2":"$500 - $2,500","3":"$2,500 - $10,000","4":"$10,000 - $50,000","5":"$50,000 - $1M+"},
+"ar": {"1":"أقل من 500$","2":"500$ - 2,500$","3":"2,500$ - 10,000$","4":"10,000$ - 50,000$","5":"50,000$ - 1M$+"},
+"id": {"1":"Dibawah $500","2":"$500 - $2,500","3":"$2,500 - $10,000","4":"$10,000 - $50,000","5":"$50,000 - $1 Juta+"},
+"ur": {"1":"500$ سے کم","2":"500$ - 2,500$","3":"2,500$ - 10,000$","4":"10,000$ - 50,000$","5":"50,000$ - 1M$+"},
+"fr": {"1":"Moins de 500$","2":"500$ - 2 500$","3":"2 500$ - 10 000$","4":"10 000$ - 50 000$","5":"50 000$ - 1M$+"},
 }
 
 EST_MAP = {
-“en”: {“1”:”$5-$20”,“2”:”$30-$100”,“3”:”$100-$400”,“4”:”$400-$2,000”,“5”:”$2,000+”},
-“ar”: {“1”:“5$-20$”,“2”:“30$-100$”,“3”:“100$-400$”,“4”:“400$-2,000$”,“5”:“2,000$+”},
-“id”: {“1”:”$5-$20”,“2”:”$30-$100”,“3”:”$100-$400”,“4”:”$400-$2.000”,“5”:”$2.000+”},
-“ur”: {“1”:”$5-$20”,“2”:”$30-$100”,“3”:”$100-$400”,“4”:”$400-$2,000”,“5”:”$2,000+”},
-“fr”: {“1”:“5$-20$”,“2”:“30$-100$”,“3”:“100$-400$”,“4”:“400$-2 000$”,“5”:“2 000$+”},
+"en": {"1":"$5-$20","2":"$30-$100","3":"$100-$400","4":"$400-$2,000","5":"$2,000+"},
+"ar": {"1":"5$-20$","2":"30$-100$","3":"100$-400$","4":"400$-2,000$","5":"2,000$+"},
+"id": {"1":"$5-$20","2":"$30-$100","3":"$100-$400","4":"$400-$2.000","5":"$2.000+"},
+"ur": {"1":"$5-$20","2":"$30-$100","3":"$100-$400","4":"$400-$2,000","5":"$2,000+"},
+"fr": {"1":"5$-20$","2":"30$-100$","3":"100$-400$","4":"400$-2 000$","5":"2 000$+"},
 }
 
 # ── TRANSLATIONS ──────────────────────────────────────────
 
 T = {
-“en”: {
-“welcome”: “👋 Welcome to Rebatrix!\n\nEarn cashback on every forex trade — win or lose.\n\nWhat would you like to do?”,
-“btn_rebates”: “💰 What are rebates?”,
-“btn_start”: “✅ I know — lets get started”,
-“btn_calc”: “🧮 Calculate my rebates”,
-“btn_socials”: “🌐 Our Socials”,
-“btn_support”: “💬 Contact Support 24/7”,
-“btn_home”: “🏠 Main menu”,
-“explain_title”: “What are forex rebates?”,
-“explain_body”: “Every time you open a trade, your broker charges you a spread or commission.\n\nRebatrix shares a portion (upto 92%) back with you automatically.\n\nYou trade as normal\nCashback on every trade\nWorks on winning AND losing trades\n\nFree to join. No catch.”,
-“btn_watch”: “▶️ Watch Video”,
-“btn_got_it”: “✅ Got it — lets go”,
-“socials_title”: “Follow us and stay updated!\n\nJoin our Telegram group for giveaways and announcements.”,
-“btn_telegram”: “Telegram Group”,
-“btn_website”: “🌐 Website”,
-“support_title”: “💬 Contact Support 24/7\n\nOur team is available around the clock.”,
-“btn_whatsapp”: “💬 Chat on WhatsApp”,
-“step1”: “Step 1 — Which broker do you trade with?”,
-“step2”: “Step 2 — What is your account size?”,
-“step3”: “Step 3 — How long have you been trading?”,
-“step3_op1”: “Less than 6 months”,
-“step3_op2”: “6 months - 2 years”,
-“step3_op3”: “2+ years”,
-“step4”: “Step 4 — Which country are you from?”,
-“btn_type_country”: “🌐 Type my country”,
-“type_country”: “Type your country name below:”,
-“step5”: “Step 5 — Where did you find us?”,
-“src1”: “Instagram”, “src2”: “Telegram”, “src3”: “TikTok”, “src4”: “YouTube”, “src5”: “Friend / Referral”,
-“broker_step_title”: “Almost there!\n\nTo get FREE access, open your {broker} account using our referral link.\n\nReferral Link: {link}\nPartner Code: {code}\n\nAlready have an account with {broker} through our referral?”,
-“btn_already_have”: “Yes I already have an account”,
-“btn_open_broker”: “Open {broker} Account”,
-“other_broker_msg”: “Which broker do you use?\n\nJust type the name below:”,
-“not_partner”: “We don’t have a referral partnership with {broker} yet.\n\nOur partners are Exness and XM.\n\nWould you like to open an account with one of them?”,
-“coming_soon”: “{broker} referral link is coming soon!\n\nFor now please sign up with Exness or XM.”,
-“btn_open_exness”: “Open Exness Account”,
-“btn_open_xm”: “Open XM Account”,
-“account_details_prompt”: “Great!\n\nPlease send your Account ID and Email in this format:\n\nAccount ID: 12345678\nEmail: yourname@email.com”,
-“eligible_title”: “You are eligible for Rebatrix!\n\nBroker: {broker}\nAccount size: {size}\nCountry: {country}\nEst. monthly cashback: {est}\n\nWant the exact number? Use the calculator.”,
-“btn_claim”: “🚀 Claim My Rebates — Free”,
-“btn_calc_exact”: “🧮 Calculate exact amount”,
-“calc_step1”: “Rebate Calculator\n\nStep 1 — Which broker do you use for XAUUSD?”,
-“calc_step2”: “Broker: {broker}\n\nStep 2 — Account type?\n\nStandard — wider spread, no commission\nRaw/ECN — tight spread, commission per trade”,
-“btn_standard”: “Standard Account”,
-“btn_raw”: “Raw / ECN Account”,
-“calc_step3”: “{broker} | {label} | ${rate}/lot\n\nStep 3 — How many lots of XAUUSD per day?\n\nCasual: 1 lot\nRegular: 3+ lots\nActive: 7+ lots\n\nType your number below:”,
-“calc_result”: “Here is what you are leaving on the table…\n\nBroker: {broker}\nAccount: {label}\nDaily lots: {d}\nRate: ${rate}/lot\n\nMonthly: ${m} uncollected\nYearly: ${y} uncollected\n\nThat is ${y} every year going to your broker.\n\nSign up free and start collecting it”,
-“btn_stop_losing”: “🚀 Stop leaving money — Join Free”,
-“btn_calc_again”: “🔄 Calculate again”,
-“app_received”: “Application received!\n\nWe will verify your account and send you the link within 24 hours.\n\nIf you need help tap the button below.”,
-“invalid_lots”: “Please enter a valid number like 2 or 0.5”,
-“fallback”: “Type /start to begin”,
+"en": {
+"welcome": "👋 Welcome to Rebatrix!\n\nEarn cashback on every forex trade — win or lose.\n\nWhat would you like to do?",
+"btn_rebates": "💰 What are rebates?",
+"btn_start": "✅ I know — lets get started",
+"btn_calc": "🧮 Calculate my rebates",
+"btn_socials": "🌐 Our Socials",
+"btn_support": "💬 Contact Support 24/7",
+"btn_home": "🏠 Main menu",
+"explain_title": "What are forex rebates?",
+"explain_body": "Every time you open a trade, your broker charges you a spread or commission.\n\nRebatrix shares a portion (upto 92%) back with you automatically.\n\nYou trade as normal\nCashback on every trade\nWorks on winning AND losing trades\n\nFree to join. No catch.",
+"btn_watch": "▶️ Watch Video",
+"btn_got_it": "✅ Got it — lets go",
+"socials_title": "Follow us and stay updated!\n\nJoin our Telegram group for giveaways and announcements.",
+"btn_telegram": "Telegram Group",
+"btn_website": "🌐 Website",
+"support_title": "💬 Contact Support 24/7\n\nOur team is available around the clock.",
+"btn_whatsapp": "💬 Chat on WhatsApp",
+"step1": "Step 1 — Which broker do you trade with?",
+"step2": "Step 2 — What is your account size?",
+"step3": "Step 3 — How long have you been trading?",
+"step3_op1": "Less than 6 months",
+"step3_op2": "6 months - 2 years",
+"step3_op3": "2+ years",
+"step4": "Step 4 — Which country are you from?",
+"btn_type_country": "🌐 Type my country",
+"type_country": "Type your country name below:",
+"step5": "Step 5 — Where did you find us?",
+"src1": "Instagram", "src2": "Telegram", "src3": "TikTok", "src4": "YouTube", "src5": "Friend / Referral",
+"broker_step_title": "Almost there!\n\nTo get FREE access, open your {broker} account using our referral link.\n\nReferral Link: {link}\nPartner Code: {code}\n\nAlready have an account with {broker} through our referral?",
+"btn_already_have": "Yes I already have an account",
+"btn_open_broker": "Open {broker} Account",
+"other_broker_msg": "Which broker do you use?\n\nJust type the name below:",
+"not_partner": "We don’t have a referral partnership with {broker} yet.\n\nOur partners are Exness and XM.\n\nWould you like to open an account with one of them?",
+"coming_soon": "{broker} referral link is coming soon!\n\nFor now please sign up with Exness or XM.",
+"btn_open_exness": "Open Exness Account",
+"btn_open_xm": "Open XM Account",
+"account_details_prompt": "Great!\n\nPlease send your Account ID and Email in this format:\n\nAccount ID: 12345678\nEmail: yourname@email.com",
+"eligible_title": "You are eligible for Rebatrix!\n\nBroker: {broker}\nAccount size: {size}\nCountry: {country}\nEst. monthly cashback: {est}\n\nWant the exact number? Use the calculator.",
+"btn_claim": "🚀 Claim My Rebates — Free",
+"btn_calc_exact": "🧮 Calculate exact amount",
+"calc_step1": "Rebate Calculator\n\nStep 1 — Which broker do you use for XAUUSD?",
+"calc_step2": "Broker: {broker}\n\nStep 2 — Account type?\n\nStandard — wider spread, no commission\nRaw/ECN — tight spread, commission per trade",
+"btn_standard": "Standard Account",
+"btn_raw": "Raw / ECN Account",
+"calc_step3": "{broker} | {label} | ${rate}/lot\n\nStep 3 — How many lots of XAUUSD per day?\n\nCasual: 1 lot\nRegular: 3+ lots\nActive: 7+ lots\n\nType your number below:",
+"calc_result": "Here is what you are leaving on the table…\n\nBroker: {broker}\nAccount: {label}\nDaily lots: {d}\nRate: ${rate}/lot\n\nMonthly: ${m} uncollected\nYearly: ${y} uncollected\n\nThat is ${y} every year going to your broker.\n\nSign up free and start collecting it",
+"btn_stop_losing": "🚀 Stop leaving money — Join Free",
+"btn_calc_again": "🔄 Calculate again",
+"app_received": "Application received!\n\nWe will verify your account and send you the link within 24 hours.\n\nIf you need help tap the button below.",
+"invalid_lots": "Please enter a valid number like 2 or 0.5",
+"fallback": "Type /start to begin",
 },
 
-```
 "ar": {
     "welcome": "👋 مرحباً بك في Rebatrix!\n\nاكسب استرداد نقدي على كل صفقة فوركس — ربحت أم خسرت.\n\nماذا تريد أن تفعل؟",
     "btn_rebates": "💰 ما هي الريبيتس؟",
@@ -307,180 +306,284 @@ T = {
     "invalid_lots": "Veuillez entrer un nombre valide comme 2 ou 0.5",
     "fallback": "Tapez /start pour commencer",
 },
-```
 
 }
 
 def t(uid, key, **kwargs):
-lang = USER.get(uid, {}).get(“lang”, “en”)
-text = T.get(lang, T[“en”]).get(key, T[“en”].get(key, key))
-if kwargs:
-try:
-text = text.format(**kwargs)
-except Exception:
-pass
-return text
+    lang = USER.get(uid, {}).get("lang", "en")
+    text = T.get(lang, T["en"]).get(key, T["en"].get(key, key))
+    if kwargs:
+        try:
+            text = text.format(**kwargs)
+        except Exception:
+            pass
+    return text
 
 def lang_of(uid):
-return USER.get(uid, {}).get(“lang”, “en”)
+    return USER.get(uid, {}).get("lang", "en")
 
 # ── LANGUAGE SELECTION ────────────────────────────────────
 
 async def start(update, context):
-uid = update.effective_user.id
-USER[uid] = {}
-await update.message.reply_text(
-“🌍 Please select your language / اختر لغتك / Pilih bahasa / زبان منتخب کریں / Choisissez votre langue”,
-reply_markup=InlineKeyboardMarkup([
-[InlineKeyboardButton(“🇬🇧 English”,    callback_data=“lang_en”)],
-[InlineKeyboardButton(“🇸🇦 العربية”,    callback_data=“lang_ar”)],
-[InlineKeyboardButton(“🇮🇩 Indonesian”, callback_data=“lang_id”)],
-[InlineKeyboardButton(“🇵🇰 اردو”,       callback_data=“lang_ur”)],
-[InlineKeyboardButton(“🇫🇷 Français”,   callback_data=“lang_fr”)],
-])
-)
+    uid = update.effective_user.id
+    USER[uid] = {}
+    await update.message.reply_text(
+    "🌍 Please select your language / اختر لغتك / Pilih bahasa / زبان منتخب کریں / Choisissez votre langue",
+    reply_markup=InlineKeyboardMarkup([
+    [InlineKeyboardButton("🇬🇧 English",    callback_data="lang_en")],
+    [InlineKeyboardButton("🇸🇦 العربية",    callback_data="lang_ar")],
+    [InlineKeyboardButton("🇮🇩 Indonesian", callback_data="lang_id")],
+    [InlineKeyboardButton("🇵🇰 اردو",       callback_data="lang_ur")],
+    [InlineKeyboardButton("🇫🇷 Français",   callback_data="lang_fr")],
+    ])
+    )
 
 async def set_lang(update, context):
-q = update.callback_query
-await q.answer()
-uid  = q.from_user.id
-lang = q.data.replace(“lang_”, “”)
-if uid not in USER:
-USER[uid] = {}
-USER[uid][“lang”] = lang
-await q.edit_message_text(
-t(uid, “welcome”),
-reply_markup=InlineKeyboardMarkup([
-[InlineKeyboardButton(t(uid, “btn_rebates”), callback_data=“explain”)],
-[InlineKeyboardButton(t(uid, “btn_start”),   callback_data=“onboard”)],
-[InlineKeyboardButton(t(uid, “btn_calc”),    callback_data=“calc”)],
-[InlineKeyboardButton(t(uid, “btn_socials”), callback_data=“socials”)],
-[InlineKeyboardButton(t(uid, “btn_support”), callback_data=“support”)],
-])
-)
+    q = update.callback_query
+    await q.answer()
+    uid  = q.from_user.id
+    lang = q.data.replace("lang_", "")
+    if uid not in USER:
+        USER[uid] = {}
+    USER[uid]["lang"] = lang
+    await q.edit_message_text(
+    t(uid, "welcome"),
+    reply_markup=InlineKeyboardMarkup([
+    [InlineKeyboardButton(t(uid, "btn_rebates"), callback_data="explain")],
+    [InlineKeyboardButton(t(uid, "btn_start"),   callback_data="onboard")],
+    [InlineKeyboardButton(t(uid, "btn_calc"),    callback_data="calc")],
+    [InlineKeyboardButton(t(uid, "btn_socials"), callback_data="socials")],
+    [InlineKeyboardButton(t(uid, "btn_support"), callback_data="support")],
+    ])
+    )
 
 def home_kb(uid):
-return InlineKeyboardMarkup([
-[InlineKeyboardButton(t(uid, “btn_rebates”), callback_data=“explain”)],
-[InlineKeyboardButton(t(uid, “btn_start”),   callback_data=“onboard”)],
-[InlineKeyboardButton(t(uid, “btn_calc”),    callback_data=“calc”)],
-[InlineKeyboardButton(t(uid, “btn_socials”), callback_data=“socials”)],
-[InlineKeyboardButton(t(uid, “btn_support”), callback_data=“support”)],
-])
+    return InlineKeyboardMarkup([
+    [InlineKeyboardButton(t(uid, "btn_rebates"), callback_data="explain")],
+    [InlineKeyboardButton(t(uid, "btn_start"),   callback_data="onboard")],
+    [InlineKeyboardButton(t(uid, "btn_calc"),    callback_data="calc")],
+    [InlineKeyboardButton(t(uid, "btn_socials"), callback_data="socials")],
+    [InlineKeyboardButton(t(uid, "btn_support"), callback_data="support")],
+    ])
 
 def back_btn(uid):
-return [InlineKeyboardButton(t(uid, “btn_home”), callback_data=“home”)]
+    return [InlineKeyboardButton(t(uid, "btn_home"), callback_data="home")]
 
-# ── BUTTON HANDLER ────────────────────────────────────────
+    # ── BUTTON HANDLER ────────────────────────────────────────
 
 async def button(update, context):
-q = update.callback_query
-await q.answer()
-uid  = q.from_user.id
-data = q.data
-if uid not in USER:
-USER[uid] = {}
-u = USER[uid]
+    q = update.callback_query
+    await q.answer()
+    uid  = q.from_user.id
+    data = q.data
+    if uid not in USER:
+        USER[uid] = {"lang": "en"}
+    elif "lang" not in USER[uid]:
+        USER[uid]["lang"] = "en"
+    u = USER[uid]
 
-```
-if data.startswith("lang_"):
-    await set_lang(update, context)
-    return
+    if data.startswith("lang_"):
+        await set_lang(update, context)
+        return
 
-if data == "home":
-    USER[uid] = {"lang": u.get("lang", "en")}
-    await q.edit_message_text(t(uid, "welcome"), reply_markup=home_kb(uid))
+    if data == "home":
+        USER[uid] = {"lang": u.get("lang", "en")}
+        await q.edit_message_text(t(uid, "welcome"), reply_markup=home_kb(uid))
 
-elif data == "explain":
-    await q.edit_message_text(
-        t(uid, "explain_body"),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(t(uid, "btn_watch"),  url=VIDEO_URL)],
-            [InlineKeyboardButton(t(uid, "btn_got_it"), callback_data="onboard")],
-            [InlineKeyboardButton(t(uid, "btn_calc"),   callback_data="calc")],
-            back_btn(uid),
-        ])
-    )
-
-elif data == "socials":
-    await q.edit_message_text(
-        t(uid, "socials_title"),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(t(uid, "btn_telegram"), url=TELEGRAM_GROUP)],
-            [InlineKeyboardButton("🎵 TikTok",            url=TIKTOK)],
-            [InlineKeyboardButton("📸 Instagram",         url=INSTAGRAM)],
-            [InlineKeyboardButton("▶️ YouTube",           url=YOUTUBE)],
-            [InlineKeyboardButton(t(uid, "btn_website"),  url=SIGNUP_LINK)],
-            back_btn(uid),
-        ])
-    )
-
-elif data == "support":
-    await q.edit_message_text(
-        t(uid, "support_title"),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(t(uid, "btn_whatsapp"), url=WHATSAPP)],
-            back_btn(uid),
-        ])
-    )
-
-elif data == "onboard":
-    u["flow"] = "onboard"
-    kb = [[InlineKeyboardButton(n, callback_data=f"ob_{k}")] for n, k in BROKERS]
-    kb = [kb[i:i+2] for i in range(0, len(kb), 2)]
-    kb.append(back_btn(uid))
-    await q.edit_message_text(t(uid, "step1"), reply_markup=InlineKeyboardMarkup(kb))
-
-elif data.startswith("ob_"):
-    u["broker"] = data.replace("ob_", "")
-    lang = lang_of(uid)
-    sizes = SIZE_MAP[lang]
-    await q.edit_message_text(
-        t(uid, "step2"),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(sizes["1"], callback_data="os_1")],
-            [InlineKeyboardButton(sizes["2"], callback_data="os_2")],
-            [InlineKeyboardButton(sizes["3"], callback_data="os_3")],
-            [InlineKeyboardButton(sizes["4"], callback_data="os_4")],
-            [InlineKeyboardButton(sizes["5"], callback_data="os_5")],
-            back_btn(uid),
-        ])
-    )
-
-elif data.startswith("os_"):
-    u["size"] = data.replace("os_", "")
-    await q.edit_message_text(
-        t(uid, "step3"),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(t(uid, "step3_op1"), callback_data="oe_new")],
-            [InlineKeyboardButton(t(uid, "step3_op2"), callback_data="oe_mid")],
-            [InlineKeyboardButton(t(uid, "step3_op3"), callback_data="oe_pro")],
-            back_btn(uid),
-        ])
-    )
-
-elif data.startswith("oe_"):
-    u["exp"] = data.replace("oe_", "")
-    await q.edit_message_text(
-        t(uid, "step4"),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("🇦🇪 UAE",      callback_data="or_uae"),
-             InlineKeyboardButton("🇮🇳 India",    callback_data="or_india")],
-            [InlineKeyboardButton("🇵🇰 Pakistan", callback_data="or_pak"),
-             InlineKeyboardButton("🇺🇸 USA",      callback_data="or_usa")],
-            [InlineKeyboardButton(t(uid, "btn_type_country"), callback_data="or_type")],
-            back_btn(uid),
-        ])
-    )
-
-elif data.startswith("or_"):
-    if data == "or_type":
-        u["waiting"] = "country"
-        await q.edit_message_text(t(uid, "type_country"))
-    else:
-        cm = {"or_uae": "UAE", "or_india": "India", "or_pak": "Pakistan", "or_usa": "USA"}
-        u["country"] = cm.get(data, "Other")
+    elif data == "explain":
         await q.edit_message_text(
+            t(uid, "explain_body"),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(t(uid, "btn_watch"),  url=VIDEO_URL)],
+                [InlineKeyboardButton(t(uid, "btn_got_it"), callback_data="onboard")],
+                [InlineKeyboardButton(t(uid, "btn_calc"),   callback_data="calc")],
+                back_btn(uid),
+            ])
+        )
+
+    elif data == "socials":
+        await q.edit_message_text(
+            t(uid, "socials_title"),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(t(uid, "btn_telegram"), url=TELEGRAM_GROUP)],
+                [InlineKeyboardButton("🎵 TikTok",            url=TIKTOK)],
+                [InlineKeyboardButton("📸 Instagram",         url=INSTAGRAM)],
+                [InlineKeyboardButton("▶️ YouTube",           url=YOUTUBE)],
+                [InlineKeyboardButton(t(uid, "btn_website"),  url=SIGNUP_LINK)],
+                back_btn(uid),
+            ])
+        )
+
+    elif data == "support":
+        await q.edit_message_text(
+            t(uid, "support_title"),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(t(uid, "btn_whatsapp"), url=WHATSAPP)],
+                back_btn(uid),
+            ])
+        )
+
+    elif data == "onboard":
+        u["flow"] = "onboard"
+        kb = [[InlineKeyboardButton(n, callback_data=f"ob_{k}")] for n, k in BROKERS]
+        kb = [kb[i:i+2] for i in range(0, len(kb), 2)]
+        kb.append(back_btn(uid))
+        await q.edit_message_text(t(uid, "step1"), reply_markup=InlineKeyboardMarkup(kb))
+
+    elif data.startswith("ob_"):
+        u["broker"] = data.replace("ob_", "")
+        lang = lang_of(uid)
+        sizes = SIZE_MAP[lang]
+        await q.edit_message_text(
+            t(uid, "step2"),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(sizes["1"], callback_data="os_1")],
+                [InlineKeyboardButton(sizes["2"], callback_data="os_2")],
+                [InlineKeyboardButton(sizes["3"], callback_data="os_3")],
+                [InlineKeyboardButton(sizes["4"], callback_data="os_4")],
+                [InlineKeyboardButton(sizes["5"], callback_data="os_5")],
+                back_btn(uid),
+            ])
+        )
+
+    elif data.startswith("os_"):
+        u["size"] = data.replace("os_", "")
+        await q.edit_message_text(
+            t(uid, "step3"),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(t(uid, "step3_op1"), callback_data="oe_new")],
+                [InlineKeyboardButton(t(uid, "step3_op2"), callback_data="oe_mid")],
+                [InlineKeyboardButton(t(uid, "step3_op3"), callback_data="oe_pro")],
+                back_btn(uid),
+            ])
+        )
+
+    elif data.startswith("oe_"):
+        u["exp"] = data.replace("oe_", "")
+        await q.edit_message_text(
+            t(uid, "step4"),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("🇦🇪 UAE",      callback_data="or_uae"),
+                 InlineKeyboardButton("🇮🇳 India",    callback_data="or_india")],
+                [InlineKeyboardButton("🇵🇰 Pakistan", callback_data="or_pak"),
+                 InlineKeyboardButton("🇺🇸 USA",      callback_data="or_usa")],
+                [InlineKeyboardButton(t(uid, "btn_type_country"), callback_data="or_type")],
+                back_btn(uid),
+            ])
+        )
+
+    elif data.startswith("or_"):
+        if data == "or_type":
+            u["waiting"] = "country"
+            await q.edit_message_text(t(uid, "type_country"))
+        else:
+            cm = {"or_uae": "UAE", "or_india": "India", "or_pak": "Pakistan", "or_usa": "USA"}
+            u["country"] = cm.get(data, "Other")
+            await q.edit_message_text(
+                t(uid, "step5"),
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton(t(uid, "src1"), callback_data="src_ig"),
+                     InlineKeyboardButton(t(uid, "src2"), callback_data="src_tg")],
+                    [InlineKeyboardButton(t(uid, "src3"), callback_data="src_tt"),
+                     InlineKeyboardButton(t(uid, "src4"), callback_data="src_yt")],
+                    [InlineKeyboardButton(t(uid, "src5"), callback_data="src_fr")],
+                    back_btn(uid),
+                ])
+            )
+
+    elif data.startswith("src_"):
+        src_map = {"src_ig": "Instagram", "src_tg": "Telegram", "src_tt": "TikTok", "src_yt": "YouTube", "src_fr": "Friend/Referral"}
+        u["source"] = src_map.get(data, "Other")
+        await _show_broker_step(q.edit_message_text, uid, u, u.get("broker", "exness"))
+
+    elif data == "already_have_account":
+        u["waiting"] = "account_details"
+        await q.edit_message_text(t(uid, "account_details_prompt"))
+
+    elif data.startswith("switch_"):
+        broker = data.replace("switch_", "")
+        u["broker"] = broker
+        await _show_broker_step(q.edit_message_text, uid, u, broker)
+
+    elif data == "calc":
+        u["flow"] = "calc"
+        kb = [[InlineKeyboardButton(n, callback_data=f"cb_{k}")] for n, k in BROKERS]
+        kb = [kb[i:i+2] for i in range(0, len(kb), 2)]
+        kb.append(back_btn(uid))
+        await q.edit_message_text(t(uid, "calc_step1"), reply_markup=InlineKeyboardMarkup(kb))
+
+    elif data.startswith("cb_"):
+        u["cb"] = data.replace("cb_", "")
+        broker = u["cb"]
+        await q.edit_message_text(
+            t(uid, "calc_step2", broker=BD.get(broker, broker)),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(t(uid, "btn_standard"), callback_data="ca_std")],
+                [InlineKeyboardButton(t(uid, "btn_raw"),      callback_data="ca_raw")],
+                back_btn(uid),
+            ])
+        )
+
+    elif data.startswith("ca_"):
+        acc    = data.replace("ca_", "")
+        broker = u.get("cb", "exness")
+        rate   = RATES.get(broker, {}).get(acc, 3.00)
+        u["ca"]      = acc
+        u["rate"]    = rate
+        u["waiting"] = "lots"
+        label = "Raw/ECN" if acc == "raw" else "Standard"
+        await q.edit_message_text(
+            t(uid, "calc_step3", broker=BD.get(broker, broker), label=label, rate=rate)
+        )
+
+async def _show_broker_step(send_fn, uid, u, broker):
+    b           = dict(zip(["exness","icmarkets","xm"], [{"name":"Exness","link":"https://one.exnessonelink.com/a/rebatrix","code":"rebatrix"},{"name":"IC Markets","link":None,"code":None},{"name":"XM","link":"https://clicks.pipaffiliates.com/c?c=1116352&l=en&p=1","code":"VG4RX"}])).get(broker, {})
+    broker_name = b.get("name", broker.title())
+
+    if broker == "other":
+        u["waiting"] = "other_broker"
+        await send_fn(t(uid, "other_broker_msg"))
+        return
+
+    if broker in ["icmarkets"]:
+        await send_fn(
+            t(uid, "coming_soon", broker=broker_name),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(t(uid, "btn_open_exness"), callback_data="switch_exness")],
+                [InlineKeyboardButton(t(uid, "btn_open_xm"),     callback_data="switch_xm")],
+                [InlineKeyboardButton(t(uid, "btn_home"),        callback_data="home")],
+            ])
+        )
+        return
+
+    link = b.get("link")
+    code = b.get("code")
+    u["selected_broker"] = broker
+
+    await send_fn(
+        t(uid, "broker_step_title", broker=broker_name, link=str(link), code=str(code)),
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton(t(uid, "btn_already_have"),                     callback_data="already_have_account")],
+            [InlineKeyboardButton(t(uid, "btn_open_broker", broker=broker_name),  url=link)],
+            [InlineKeyboardButton(t(uid, "btn_home"),                             callback_data="home")],
+        ])
+    )
+
+    # ── MESSAGE HANDLER ───────────────────────────────────────
+
+async def message(update, context):
+    uid  = update.effective_user.id
+    text = update.message.text.strip()
+    if uid not in USER:
+        USER[uid] = {"lang": "en"}
+    elif "lang" not in USER[uid]:
+        USER[uid]["lang"] = "en"
+    u = USER[uid]
+
+    if u.get("waiting") == "country":
+        u["country"] = text
+        u["waiting"] = None
+        await update.message.reply_text(
             t(uid, "step5"),
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton(t(uid, "src1"), callback_data="src_ig"),
@@ -492,251 +595,144 @@ elif data.startswith("or_"):
             ])
         )
 
-elif data.startswith("src_"):
-    src_map = {"src_ig": "Instagram", "src_tg": "Telegram", "src_tt": "TikTok", "src_yt": "YouTube", "src_fr": "Friend/Referral"}
-    u["source"] = src_map.get(data, "Other")
-    await _show_broker_step(q.edit_message_text, uid, u, u.get("broker", "exness"))
-
-elif data == "already_have_account":
-    u["waiting"] = "account_details"
-    await q.edit_message_text(t(uid, "account_details_prompt"))
-
-elif data.startswith("switch_"):
-    broker = data.replace("switch_", "")
-    u["broker"] = broker
-    await _show_broker_step(q.edit_message_text, uid, u, broker)
-
-elif data == "calc":
-    u["flow"] = "calc"
-    kb = [[InlineKeyboardButton(n, callback_data=f"cb_{k}")] for n, k in BROKERS]
-    kb = [kb[i:i+2] for i in range(0, len(kb), 2)]
-    kb.append(back_btn(uid))
-    await q.edit_message_text(t(uid, "calc_step1"), reply_markup=InlineKeyboardMarkup(kb))
-
-elif data.startswith("cb_"):
-    u["cb"] = data.replace("cb_", "")
-    broker = u["cb"]
-    await q.edit_message_text(
-        t(uid, "calc_step2", broker=BD.get(broker, broker)),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(t(uid, "btn_standard"), callback_data="ca_std")],
-            [InlineKeyboardButton(t(uid, "btn_raw"),      callback_data="ca_raw")],
-            back_btn(uid),
-        ])
-    )
-
-elif data.startswith("ca_"):
-    acc    = data.replace("ca_", "")
-    broker = u.get("cb", "exness")
-    rate   = RATES.get(broker, {}).get(acc, 3.00)
-    u["ca"]      = acc
-    u["rate"]    = rate
-    u["waiting"] = "lots"
-    label = "Raw/ECN" if acc == "raw" else "Standard"
-    await q.edit_message_text(
-        t(uid, "calc_step3", broker=BD.get(broker, broker), label=label, rate=rate)
-    )
-```
-
-async def _show_broker_step(send_fn, uid, u, broker):
-b           = dict(zip([“exness”,“icmarkets”,“xm”], [{“name”:“Exness”,“link”:“https://one.exnessonelink.com/a/rebatrix”,“code”:“rebatrix”},{“name”:“IC Markets”,“link”:None,“code”:None},{“name”:“XM”,“link”:“https://clicks.pipaffiliates.com/c?c=1116352&l=en&p=1”,“code”:“VG4RX”}])).get(broker, {})
-broker_name = b.get(“name”, broker.title())
-
-```
-if broker == "other":
-    u["waiting"] = "other_broker"
-    await send_fn(t(uid, "other_broker_msg"))
-    return
-
-if broker in ["icmarkets"]:
-    await send_fn(
-        t(uid, "coming_soon", broker=broker_name),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(t(uid, "btn_open_exness"), callback_data="switch_exness")],
-            [InlineKeyboardButton(t(uid, "btn_open_xm"),     callback_data="switch_xm")],
-            [InlineKeyboardButton(t(uid, "btn_home"),        callback_data="home")],
-        ])
-    )
-    return
-
-link = b.get("link")
-code = b.get("code")
-u["selected_broker"] = broker
-
-await send_fn(
-    t(uid, "broker_step_title", broker=broker_name, link=str(link), code=str(code)),
-    reply_markup=InlineKeyboardMarkup([
-        [InlineKeyboardButton(t(uid, "btn_already_have"),                     callback_data="already_have_account")],
-        [InlineKeyboardButton(t(uid, "btn_open_broker", broker=broker_name),  url=link)],
-        [InlineKeyboardButton(t(uid, "btn_home"),                             callback_data="home")],
-    ])
-)
-```
-
-# ── MESSAGE HANDLER ───────────────────────────────────────
-
-async def message(update, context):
-uid  = update.effective_user.id
-text = update.message.text.strip()
-if uid not in USER:
-USER[uid] = {}
-u = USER[uid]
-
-```
-if u.get("waiting") == "country":
-    u["country"] = text
-    u["waiting"] = None
-    await update.message.reply_text(
-        t(uid, "step5"),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(t(uid, "src1"), callback_data="src_ig"),
-             InlineKeyboardButton(t(uid, "src2"), callback_data="src_tg")],
-            [InlineKeyboardButton(t(uid, "src3"), callback_data="src_tt"),
-             InlineKeyboardButton(t(uid, "src4"), callback_data="src_yt")],
-            [InlineKeyboardButton(t(uid, "src5"), callback_data="src_fr")],
-            back_btn(uid),
-        ])
-    )
-
-elif u.get("waiting") == "other_broker":
-    u["broker_custom"] = text
-    u["waiting"] = None
-    await update.message.reply_text(
-        t(uid, "not_partner", broker=text),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(t(uid, "btn_open_exness"), callback_data="switch_exness")],
-            [InlineKeyboardButton(t(uid, "btn_open_xm"),     callback_data="switch_xm")],
-            [InlineKeyboardButton(t(uid, "btn_home"),        callback_data="home")],
-        ])
-    )
-
-elif u.get("waiting") == "account_details":
-    u["account_details"] = text
-    u["waiting"] = None
-    user        = update.effective_user
-    name        = user.full_name
-    username    = "@" + user.username if user.username else "No username"
-    broker      = u.get("broker", "unknown")
-    lang        = lang_of(uid)
-    size        = SIZE_MAP[lang].get(u.get("size", ""), "Unknown")
-    country     = u.get("country", "Unknown")
-    source      = u.get("source", "Unknown")
-    broker_name = BD.get(broker, broker.title())
-
-    try:
-        await context.bot.send_message(
-            chat_id=7114761739,
-            text=(
-                "NEW VIP APPLICATION\n\n"
-                "Name: " + name + "\n"
-                "Username: " + username + "\n"
-                "User ID: " + str(uid) + "\n"
-                "Language: " + lang.upper() + "\n"
-                "Broker: " + broker_name + "\n"
-                "Account size: " + size + "\n"
-                "Country: " + country + "\n"
-                "Found us via: " + source + "\n\n"
-                "Account details:\n" + text + "\n\n"
-                "To approve: /approve " + str(uid) + "\n"
-                "To reject:  /reject "  + str(uid)
-            )
+    elif u.get("waiting") == "other_broker":
+        u["broker_custom"] = text
+        u["waiting"] = None
+        await update.message.reply_text(
+            t(uid, "not_partner", broker=text),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(t(uid, "btn_open_exness"), callback_data="switch_exness")],
+                [InlineKeyboardButton(t(uid, "btn_open_xm"),     callback_data="switch_xm")],
+                [InlineKeyboardButton(t(uid, "btn_home"),        callback_data="home")],
+            ])
         )
-    except Exception:
-        pass
 
-    await update.message.reply_text(
-        t(uid, "app_received"),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(t(uid, "btn_whatsapp"), url=WHATSAPP)],
-            [InlineKeyboardButton(t(uid, "btn_home"),     callback_data="home")],
-        ])
-    )
+    elif u.get("waiting") == "account_details":
+        u["account_details"] = text
+        u["waiting"] = None
+        user        = update.effective_user
+        name        = user.full_name
+        username    = "@" + user.username if user.username else "No username"
+        broker      = u.get("broker", "unknown")
+        lang        = lang_of(uid)
+        size        = SIZE_MAP[lang].get(u.get("size", ""), "Unknown")
+        country     = u.get("country", "Unknown")
+        source      = u.get("source", "Unknown")
+        broker_name = BD.get(broker, broker.title())
 
-elif u.get("waiting") == "lots":
-    try:
-        d = float(text)
-        if d <= 0:
-            raise ValueError
-    except Exception:
-        await update.message.reply_text(t(uid, "invalid_lots"))
-        return
-    broker = u.get("cb", "exness")
-    acc    = u.get("ca", "std")
-    rate   = u.get("rate", 3.00)
-    label  = "Raw/ECN" if acc == "raw" else "Standard"
-    lang   = lang_of(uid)
-    m      = round(d * 22  * rate, 2)
-    y      = round(d * 252 * rate, 2)
-    u["waiting"] = None
-    await update.message.reply_text(
-        t(uid, "calc_result", broker=BD.get(broker, broker), label=label, d=d, rate=rate, m=m, y=y),
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(t(uid, "btn_stop_losing"), url=SIGNUP_LINK)],
-            [InlineKeyboardButton(t(uid, "btn_calc_again"),  callback_data="calc")],
-            [InlineKeyboardButton(t(uid, "btn_home"),        callback_data="home")],
-        ])
-    )
-else:
-    await update.message.reply_text(t(uid, "fallback"))
-```
+        try:
+            await context.bot.send_message(
+                chat_id=7114761739,
+                text=(
+                    "NEW VIP APPLICATION\n\n"
+                    "Name: " + name + "\n"
+                    "Username: " + username + "\n"
+                    "User ID: " + str(uid) + "\n"
+                    "Language: " + lang.upper() + "\n"
+                    "Broker: " + broker_name + "\n"
+                    "Account size: " + size + "\n"
+                    "Country: " + country + "\n"
+                    "Found us via: " + source + "\n\n"
+                    "Account details:\n" + text + "\n\n"
+                    "To approve: /approve " + str(uid) + "\n"
+                    "To reject:  /reject "  + str(uid)
+                )
+            )
+        except Exception:
+            pass
 
-# ── ADMIN ─────────────────────────────────────────────────
+        await update.message.reply_text(
+            t(uid, "app_received"),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(t(uid, "btn_whatsapp"), url=WHATSAPP)],
+                [InlineKeyboardButton(t(uid, "btn_home"),     callback_data="home")],
+            ])
+        )
+
+    elif u.get("waiting") == "lots":
+        try:
+            d = float(text)
+            if d <= 0:
+                raise ValueError
+        except Exception:
+            await update.message.reply_text(t(uid, "invalid_lots"))
+            return
+        broker = u.get("cb", "exness")
+        acc    = u.get("ca", "std")
+        rate   = u.get("rate", 3.00)
+        label  = "Raw/ECN" if acc == "raw" else "Standard"
+        lang   = lang_of(uid)
+        m      = round(d * 22  * rate, 2)
+        y      = round(d * 252 * rate, 2)
+        u["waiting"] = None
+        await update.message.reply_text(
+            t(uid, "calc_result", broker=BD.get(broker, broker), label=label, d=d, rate=rate, m=m, y=y),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(t(uid, "btn_stop_losing"), url=SIGNUP_LINK)],
+                [InlineKeyboardButton(t(uid, "btn_calc_again"),  callback_data="calc")],
+                [InlineKeyboardButton(t(uid, "btn_home"),        callback_data="home")],
+            ])
+        )
+    else:
+        await update.message.reply_text(t(uid, "fallback"))
+
+    # ── ADMIN ─────────────────────────────────────────────────
 
 async def approve(update, context):
-if update.effective_user.id != 7114761739:
-return
-if not context.args:
-await update.message.reply_text(“Usage: /approve [user_id]”)
-return
-try:
-target_uid = int(context.args[0])
-except ValueError:
-await update.message.reply_text(“Invalid user ID.”)
-return
-lang = USER.get(target_uid, {}).get(“lang”, “en”)
-msgs = {
-“en”: “Congratulations! Your account has been verified.\n\nYou can now access Rebatrix!\n\n” + SIGNUP_LINK,
-“ar”: “تهانينا! تم التحقق من حسابك.\n\nيمكنك الآن الوصول إلى Rebatrix!\n\n” + SIGNUP_LINK,
-“id”: “Selamat! Akun kamu telah diverifikasi.\n\nKamu sekarang bisa mengakses Rebatrix!\n\n” + SIGNUP_LINK,
-“ur”: “مبارک ہو! آپ کا اکاؤنٹ تصدیق ہو گیا ہے۔\n\nاب آپ Rebatrix تک رسائی حاصل کر سکتے ہیں!\n\n” + SIGNUP_LINK,
-“fr”: “Félicitations! Votre compte a été vérifié.\n\nVous pouvez maintenant accéder à Rebatrix!\n\n” + SIGNUP_LINK,
-}
-await context.bot.send_message(chat_id=target_uid, text=msgs.get(lang, msgs[“en”]))
-await update.message.reply_text(“Approved! Link sent to user “ + str(target_uid))
+    if update.effective_user.id != 7114761739:
+        return
+    if not context.args:
+        await update.message.reply_text("Usage: /approve [user_id]")
+        return
+    try:
+        target_uid = int(context.args[0])
+    except ValueError:
+        await update.message.reply_text("Invalid user ID.")
+        return
+    lang = USER.get(target_uid, {}).get("lang", "en")
+    msgs = {
+    "en": "Congratulations! Your account has been verified.\n\nYou can now access Rebatrix!\n\n" + SIGNUP_LINK,
+    "ar": "تهانينا! تم التحقق من حسابك.\n\nيمكنك الآن الوصول إلى Rebatrix!\n\n" + SIGNUP_LINK,
+    "id": "Selamat! Akun kamu telah diverifikasi.\n\nKamu sekarang bisa mengakses Rebatrix!\n\n" + SIGNUP_LINK,
+    "ur": "مبارک ہو! آپ کا اکاؤنٹ تصدیق ہو گیا ہے۔\n\nاب آپ Rebatrix تک رسائی حاصل کر سکتے ہیں!\n\n" + SIGNUP_LINK,
+    "fr": "Félicitations! Votre compte a été vérifié.\n\nVous pouvez maintenant accéder à Rebatrix!\n\n" + SIGNUP_LINK,
+    }
+    await context.bot.send_message(chat_id=target_uid, text=msgs.get(lang, msgs["en"]))
+    await update.message.reply_text("Approved! Link sent to user " + str(target_uid))
 
 async def reject(update, context):
-if update.effective_user.id != 7114761739:
-return
-if not context.args:
-await update.message.reply_text(“Usage: /reject [user_id]”)
-return
-try:
-target_uid = int(context.args[0])
-except ValueError:
-await update.message.reply_text(“Invalid user ID.”)
-return
-lang = USER.get(target_uid, {}).get(“lang”, “en”)
-msgs = {
-“en”: “We could not verify your account. Please make sure you signed up correctly and try again. Type /start to reapply.”,
-“ar”: “لم نتمكن من التحقق من حسابك. تأكد من التسجيل بشكل صحيح وحاول مجدداً. اكتب /start للتقديم مجدداً.”,
-“id”: “Kami tidak dapat memverifikasi akun kamu. Pastikan kamu mendaftar dengan benar dan coba lagi. Ketik /start untuk mendaftar ulang.”,
-“ur”: “ہم آپ کے اکاؤنٹ کی تصدیق نہیں کر سکے۔ دوبارہ کوشش کریں۔ /start لکھ کر دوبارہ درخواست دیں۔”,
-“fr”: “Nous n’avons pas pu verifier votre compte. Assurez-vous d’avoir bien suivi les etapes. Tapez /start pour repostuler.”,
-}
-await context.bot.send_message(chat_id=target_uid, text=msgs.get(lang, msgs[“en”]))
-await update.message.reply_text(“Rejected. User “ + str(target_uid) + “ notified.”)
+    if update.effective_user.id != 7114761739:
+        return
+    if not context.args:
+        await update.message.reply_text("Usage: /reject [user_id]")
+        return
+    try:
+        target_uid = int(context.args[0])
+    except ValueError:
+        await update.message.reply_text("Invalid user ID.")
+        return
+    lang = USER.get(target_uid, {}).get("lang", "en")
+    msgs = {
+    "en": "We could not verify your account. Please make sure you signed up correctly and try again. Type /start to reapply.",
+    "ar": "لم نتمكن من التحقق من حسابك. تأكد من التسجيل بشكل صحيح وحاول مجدداً. اكتب /start للتقديم مجدداً.",
+    "id": "Kami tidak dapat memverifikasi akun kamu. Pastikan kamu mendaftar dengan benar dan coba lagi. Ketik /start untuk mendaftar ulang.",
+    "ur": "ہم آپ کے اکاؤنٹ کی تصدیق نہیں کر سکے۔ دوبارہ کوشش کریں۔ /start لکھ کر دوبارہ درخواست دیں۔",
+    "fr": "Nous n’avons pas pu verifier votre compte. Assurez-vous d’avoir bien suivi les etapes. Tapez /start pour repostuler.",
+    }
+    await context.bot.send_message(chat_id=target_uid, text=msgs.get(lang, msgs["en"]))
+    await update.message.reply_text("Rejected. User " + str(target_uid) + " notified.")
 
 # ── MAIN ──────────────────────────────────────────────────
 
 def main():
-app = Application.builder().token(BOT_TOKEN).build()
-app.add_handler(CommandHandler(“start”,   start))
-app.add_handler(CommandHandler(“approve”, approve))
-app.add_handler(CommandHandler(“reject”,  reject))
-app.add_handler(CallbackQueryHandler(button))
-app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message))
-print(“Rebatrix multilingual bot running…”)
-app.run_polling(drop_pending_updates=True)
+    app = Application.builder().token(BOT_TOKEN).build()
+    app.add_handler(CommandHandler("start",   start))
+    app.add_handler(CommandHandler("approve", approve))
+    app.add_handler(CommandHandler("reject",  reject))
+    app.add_handler(CallbackQueryHandler(button))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message))
+    print("Rebatrix multilingual bot running…")
+    app.run_polling(drop_pending_updates=True)
 
-if **name** == “**main**”:
-main()
+if __name__ == "__main__":
+    main()
